@@ -1,0 +1,30 @@
+{% extends 'blog/base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<form method="GET" class="d-flex mb-3">
+    <input type="text" name="q" class="form-control me-2" placeholder="Search posts...">
+    <button type="submit" class="btn btn-outline-primary">Search</button>
+</form>
+
+{% for post in posts %}
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <p class="card-text">{{ post.content }}</p>
+      <p class="card-text">
+        <small class="text-muted">
+          By {{ post.author.username }} on {{ post.created_at|date:"d M Y" }}
+        </small>
+      </p>
+      {% if post.author.username == "Guest" %}
+        <a href="{% url 'update_post' post.id %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">Delete</a>
+      {% endif %}
+    </div>
+  </div>
+{% empty %}
+  <p>No posts found.</p>
+{% endfor %}
+
+{% endblock %}
